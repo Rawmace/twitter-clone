@@ -3,31 +3,46 @@ import express from "express";
 import authRoutes from "./routes/auth.routes.js";
 import dotenv from "dotenv";
 import connectMongoDB from "./db/connectMongoDB.js";
+import cookieParser from "cookie-parser";
 
-//-------------------------------------------------------import area ends -----------------------------------
-
-//define and decalre
-
+// Load environment variables
 dotenv.config();
+
+// Define and declare constants
 const PORT = process.env.PORT || 5000;
 const app = express();
 
-//Middleware to parse JSON requests
+// Middleware to parse JSON requests
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-//logging the MONGO URI for debugging purposes
-console.log(process.env.MONGO_URI);
+// Logging the MONGO URI for debugging purposes (consider removing in production)
+console.log("Mongo URI:", process.env.MONGO_URI);
 
-// use authentication routes
+// Use authentication routes
 app.use("/api/auth", authRoutes);
 
-//erro handling middleware
+// Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
+  console.error("Error:", err.stack);
+  res.status(500).json({ error: "Something broke!" }); // Send a JSON response for consistency
 });
-//start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}, http://localhost:${PORT}`);
-  connectMongoDB();
-});
+
+// Start the server and connect to MongoDB
+const startServer = async () => {
+  try {
+    await connectMongoDB(); // Ensure MongoDB connection before starting the server
+    app.listen(PORT, () => {
+      console.log(
+        `Server is running on port ${PORT}, http://localhost:${PORT}`
+      );
+    });
+  } catch (error) {
+    console.error("Failed to connect to MongoDB:", error.message);
+    process.exit(1); // Exit the process with failure
+  }
+};
+
+// Initialize the server
+startServer();

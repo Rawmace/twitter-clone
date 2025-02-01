@@ -1,38 +1,42 @@
 import mongoose from "mongoose";
+
 const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
       required: true,
       unique: true,
+      trim: true, // Automatically trim whitespace
     },
     fullName: {
       type: String,
       required: true,
+      trim: true, // Automatically trim whitespace
     },
     password: {
       type: String,
-      requird: true,
+      required: true, // Fixed typo here
       minLength: 6,
     },
     email: {
       type: String,
       required: true,
       unique: true,
+      trim: true, // Automatically trim whitespace
+      lowercase: true, // Store email in lowercase
     },
-    //each user will be having followers so array
     followers: [
       {
-        type: mongoose.Schema.Types.ObjectId, //
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        default: [], // a person will have 0 folowers when signed up
+        default: [], // Default to an empty array
       },
     ],
     following: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        default: [], // a person will have 0 folowing when signed up
+        default: [], // Default to an empty array
       },
     ],
     profileImg: {
@@ -46,14 +50,16 @@ const userSchema = new mongoose.Schema(
     bio: {
       type: String,
       default: "",
+      trim: true, // Automatically trim whitespace
     },
     link: {
       type: String,
       default: "",
     },
   },
-  { timestamps: true }
-); //member since july 2021 createdAt:
+  { timestamps: true } // Automatically add createdAt and updatedAt fields
+);
 
+// Create User model
 const User = mongoose.model("User", userSchema);
 export default User;

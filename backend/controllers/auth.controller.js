@@ -1,4 +1,4 @@
-import { generateTokenAndSetCookie } from "../lib/utils/generateToken.js"; // Corrected spelling of 'generate'
+import { generateTokenAndSetCookie } from "../lib/utils/generateToken.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 
@@ -74,14 +74,14 @@ export const login = async (req, res) => {
 
     // Check if user exists
     if (!user) {
-      return res.status(400).json({ error: "Invalid username or password" });
+      return res.status(400).json({ error: "Invalid credentials" }); // Generic message
     }
 
     // Compare provided password with hashed password in database
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      return res.status(400).json({ error: "Invalid username or password" });
+      return res.status(400).json({ error: "Invalid credentials" }); // Generic message
     }
 
     // Generate token and set cookie after successful login

@@ -1,13 +1,22 @@
 // Import required modules
 import express from "express";
-import authRoutes from "./routes/auth.routes.js";
 import dotenv from "dotenv";
-import connectMongoDB from "./db/connectMongoDB.js";
 import cookieParser from "cookie-parser";
+import { v2 as cloudinary } from "cloudinary";
+import authRoutes from "./routes/auth.routes.js";
+import userRoutes from "./routes/user.routes.js";
+
+import connectMongoDB from "./db/connectMongoDB.js";
 
 // Load environment variables
 dotenv.config();
 
+//importing cloudinary api and cloud names
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_KEY,
+});
 // Define and declare constants
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -18,10 +27,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Logging the MONGO URI for debugging purposes (consider removing in production)
-console.log("Mongo URI:", process.env.MONGO_URI);
+if (process.env.NODE_ENV !== "production") {
+  console.log("Mongo URI:", process.env.MONGO_URI);
+}
 
 // Use authentication routes
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

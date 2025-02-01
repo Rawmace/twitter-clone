@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
-//note this is created to check the user if its fake robot or anything so that it doesnt crash if a user wanna login
+
+// Middleware to protect routes by verifying JWT
 export const protectRoute = async (req, res, next) => {
   // Check if JWT_SECRET is defined
   if (!process.env.JWT_SECRET) {
@@ -26,7 +27,9 @@ export const protectRoute = async (req, res, next) => {
 
     // Attach user information to the request object
     req.user = user;
-    next(); // Call the next middleware or route handler
+
+    // Call the next middleware or route handler
+    next();
   } catch (error) {
     console.error("Error in protectRoute middleware:", error.message);
 
@@ -40,6 +43,6 @@ export const protectRoute = async (req, res, next) => {
     }
 
     // Handle other errors
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };

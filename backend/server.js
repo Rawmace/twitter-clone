@@ -6,6 +6,7 @@ import { v2 as cloudinary } from "cloudinary";
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import postRoutes from "./routes/post.routes.js";
+import notificationRoutes from "./routes/notification.routes.js";
 
 import connectMongoDB from "./db/connectMongoDB.js";
 
@@ -36,6 +37,7 @@ if (process.env.NODE_ENV !== "production") {
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

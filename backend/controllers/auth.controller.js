@@ -2,7 +2,7 @@ import { generateTokenAndSetCookie } from "../lib/utils/generateToken.js";
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 
-// Signup controller
+// ---------------------------Signup controller------------------------
 export const signup = async (req, res) => {
   try {
     const { fullName, username, email, password } = req.body;
@@ -64,7 +64,7 @@ export const signup = async (req, res) => {
   }
 };
 
-// Login controller
+//--------------------------- Login controller----------------------
 export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -104,7 +104,7 @@ export const login = async (req, res) => {
   }
 };
 
-// Logout controller
+// ============================Logout controller=========================
 export const logout = async (req, res) => {
   try {
     res.cookie("jwt", "", { maxAge: 0 }); // Clear the cookie
@@ -115,7 +115,7 @@ export const logout = async (req, res) => {
   }
 };
 
-// Get current user information
+//===================== Get current user information=======================
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select("-password");

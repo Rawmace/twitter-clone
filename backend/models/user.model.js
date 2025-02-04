@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true, // Fixed typo here
+      required: true,
       minLength: 6,
     },
     email: {
@@ -55,6 +55,12 @@ const userSchema = new mongoose.Schema(
     link: {
       type: String,
       default: "",
+    },
+    // user wants to see the no of likes and comments on his profile
+    likedPosts: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
+      default: [],
     },
   },
   { timestamps: true } // Automatically add createdAt and updatedAt fields

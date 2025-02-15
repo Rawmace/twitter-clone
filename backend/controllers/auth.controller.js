@@ -41,6 +41,7 @@ export const signup = async (req, res) => {
       username,
       email,
       password: hashedPassword,
+      likedPosts: [], // Explicitly initialize likedPosts as an empty array
     });
 
     // Save the user and set cookie

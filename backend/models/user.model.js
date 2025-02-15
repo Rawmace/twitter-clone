@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minLength: 6,
+      minLength: 6, // Minimum length of 6 characters
     },
     email: {
       type: String,
@@ -57,11 +57,13 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
     // user wants to see the no of likes and comments on his profile
-    likedPosts: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Post",
-      default: [],
-    },
+    likedPosts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+        default: [],
+      },
+    ],
   },
   { timestamps: true } // Automatically add createdAt and updatedAt fields
 );

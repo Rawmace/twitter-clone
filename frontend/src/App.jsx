@@ -81,7 +81,6 @@ const App = () => {
 
       {/* Show sidebar only for authenticated routes */}
       {authUser && !isAuthPage && <Sidebar />}
-
       <main className="flex-1 flex flex-col">
         <ScrollToTop />
         <Routes>
